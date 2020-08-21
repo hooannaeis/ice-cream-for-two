@@ -1,17 +1,20 @@
 <template>
   <div>
-    <h1>Meine Listen</h1>
-    <div v-if="myLists.length > 0">
-      <div v-for="(listName, listIndex) in myLists" :key="listIndex">
-        <router-link class="link" :to="listName">{{listName}}</router-link>
-      </div>
-    </div>
-    <div v-else>Du hast noch keine Listen erstellt.</div>
+    <h1>Ice cream for two</h1>
     <section class="divider--top">
+      <h2>Neue Liste Erstellen</h2>
       <div v-if="error" class="error">{{error}}</div>
       <input type="text" id="newListName" v-model="newListName" placeholder="Neue Liste erstellen" />
-
-      <button class="button--big" @click="createList">+</button>
+      <Button @click.native="createList" buttonText="+"></Button>
+    </section>
+    <section class="divider--top">
+      <h2>Meine Listen</h2>
+      <div v-if="myLists.length > 0">
+        <div v-for="(listName, listIndex) in myLists" :key="listIndex">
+          <ListLink :listPath="listName" />
+        </div>
+      </div>
+      <div v-else>Du hast noch keine Listen erstellt.</div>
     </section>
   </div>
 </template>
@@ -19,6 +22,8 @@
 <script>
 import { db } from '../main';
 import { firebase } from '@firebase/app';
+import ListLink from '../components/ListLink';
+import Button from '../components/Button';
 
 export default {
   name: 'Home',
@@ -27,6 +32,10 @@ export default {
       error: null,
       newListName: undefined,
     };
+  },
+  components: {
+    ListLink,
+    Button
   },
   computed: {
     myLists() {
@@ -128,24 +137,9 @@ li {
   padding: 0.2rem 0;
 }
 
-button {
-  text-decoration: none;
-  cursor: pointer;
-  margin: auto;
-  border: none;
-  padding: 0.3rem;
-  border-radius: 50px;
-  background: #e7be7e;
-  box-shadow: 20px 20px 60px #c4a26b, -20px -20px 60px #ffdb91;
-}
-
-.button--big {
-  font-size: 2rem;
-}
-
 .divider--top {
-  margin-top: 2rem;
-  padding: 2rem;
+  margin-top: 1rem;
+  padding: 1rem;
   border-top: 1px solid gba(231, 190, 126, 1);
 }
 </style>

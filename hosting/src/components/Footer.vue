@@ -2,7 +2,7 @@
   <div>
     <svg
       width="4rem"
-      height="100%"
+      height="116px"
       viewBox="0 0 243 477"
       version="1.1"
       xmlns="http://www.w3.org/2000/svg"

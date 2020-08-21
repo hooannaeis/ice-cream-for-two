@@ -19,19 +19,25 @@ export default {
 };
 </script>
 <style>
+html, body {
+  margin: 0;
+  padding: 0;
+}
+
 #app {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   display: grid;
   justify-items: center;
-  min-height: 98vh;
+  min-height: 95vh;
   max-width: 100vw;
   overflow-x: hidden;
+  padding: 1rem;
   background: rgb(43, 90, 144);
   background: radial-gradient(
     circle,
     rgba(43, 90, 144, 1) 0%,
-    rgba(125, 168, 223, 1) 100%
+    rgba(1, 168, 223, 1) 100%
   );
 }
 

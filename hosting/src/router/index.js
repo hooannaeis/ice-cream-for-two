@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Home from '../views/Home.vue'
+import ExpenseList from '../views/ExpenseList.vue'
 
 Vue.use(VueRouter)
 
@@ -9,7 +10,8 @@ Vue.use(VueRouter)
     path: '/',
     name: 'Home',
     component: Home
-  }
+  },
+  { path: '/expense-lists/:expenseListId', component: ExpenseList }
 ]
 
 const router = new VueRouter({
