@@ -19,7 +19,7 @@
       <div class="np-form-group">
         <label v-if="error.amount" for="addAmount" class="np-form-element error">{{ error.amount }}</label>
         <label v-else class="np-form-element" for="addAmount">Betrag</label>
-        <input class="np-form-element" type="number" id="addAmount" v-model="expenseToAdd.amount" />
+        <input class="np-form-element" type="number" min="0" id="addAmount" v-model="expenseToAdd.amount" />
       </div>
       <div class="error" v-if="error.general">{{error.general}}</div>
       <Button isWarning="true" @click.native="toggleAddMode">verwerfen</Button>
