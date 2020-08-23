@@ -1,13 +1,13 @@
 <template>
   <div>
     <h1>Ice cream for two</h1>
-    <section class="divider--top">
+    <section class="section--left">
       <h2>Neue Liste Erstellen</h2>
       <div v-if="error" class="error">{{error}}</div>
       <input type="text" id="newListName" v-model="newListName" placeholder="Neue Liste erstellen" />
-      <Button @click.native="createList" buttonText="+"></Button>
+      <Button @click.native="createList">+</Button>
     </section>
-    <section class="divider--top">
+    <section class="section--right">
       <h2>Meine Listen</h2>
       <div v-if="myLists.length > 0">
         <div v-for="(listName, listIndex) in myLists" :key="listIndex">
@@ -73,6 +73,7 @@ export default {
           } else {
             localStorage.setItem('myLists', doc.path);
           }
+          this.$router.push({ path: doc.path });
         })
         .catch((err) => {
           this.error = err;
@@ -96,7 +97,7 @@ export default {
 
 
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Parisienne&family=Roboto&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Dokdo&family=Roboto&display=swap');
 body {
   font-family: 'Roboto', sans-serif;
   line-height: 1.7;
@@ -104,27 +105,33 @@ body {
   background: linear-gradient(145deg, #b0b0b0, #d2d2d2);
 }
 
-h1 {
-  font-family: 'Parisienne', cursive;
+h1, h2 {
+  font-family: 'Dokdo', cursive;
   color: #2e2d2d;
   padding: 0.2rem;
+  margin: 0;
+  margin-top: 0.5rem;
+}
+
+h1 {
+  font-size: 3rem;
+}
+
+h2 {
+  font-size: 2.2rem;
 }
 
 .error {
   color: red;
 }
 
-input[type='text'] {
+input[type='text'], input[type='number'] {
   border: none;
   border-bottom: 1px solid black;
   padding: 0.8rem;
-  margin: 1rem 0px;
+  margin: 0;
+  margin-bottom: 1rem;
   background: transparent;
-}
-
-input[type='text']:focus {
-  outline: none;
-  border-bottom: 1px solid blue;
 }
 
 ul {
@@ -137,9 +144,21 @@ li {
   padding: 0.2rem 0;
 }
 
-.divider--top {
-  margin-top: 1rem;
-  padding: 1rem;
-  border-top: 1px solid gba(231, 190, 126, 1);
+section {
+  padding: 0.3rem;
+  margin-bottom: 0.5rem;
+}
+.section--right {
+  margin-right: 1rem;
+  background: #eeb965;
+  border-top-right-radius: 50px;
+  border-bottom-right-radius: 50px;
+}
+
+.section--left {
+  margin-left: 1rem;
+  background: #e2b865;
+  border-top-left-radius: 50px;
+  border-bottom-left-radius: 50px;
 }
 </style>

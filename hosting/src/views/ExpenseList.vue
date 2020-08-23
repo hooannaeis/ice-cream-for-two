@@ -1,30 +1,37 @@
 <template>
   <div>
     <h1>{{listObject.name}}</h1>
-    <section class="divider--top">
-      <h2>Ausgaben eintragen</h2>
-      <div v-if="error" class="error">{{error}}</div>
-      <input
-        type="text"
-        id="newExpenseName"
-        v-model="newExpenseName"
-        placeholder="Beschreibe deine Ausgaben"
-      />
-      <Button @click.native="createExpense" buttonText="+"></Button>
+    <section v-if="listObject.settled">
+      <div>diese Liste ist bereits beglichen</div>
     </section>
-    <section class="divider--top">
-      <h2>Ausgaben</h2>
-      <div v-if="subListObject.length > 0">
-        <div v-for="(subList, subListIndex) in subListObject" :key="subListIndex">{{ subList }}</div>
-      </div>
-      <div v-else>Du hast noch keine Ausgaben eingetragen.</div>
+    <section class="section--left">
+      <h2>Zusammenfassung</h2>
+      <p>Gesamtausgaben: {{totalListSum}} EUR</p>
+      <p>Teilnehmer: {{participants}}</p>
+      <Button isLink="true" isPrimary="true">
+        <router-link :to="'/settle-list/' + $route.params.expenseListId">Ausgaben begleichen</router-link>
+      </Button>
     </section>
-    <Button @click.native="deleteList" buttonText="Ausgabenliste löschen"></Button>
+    <section>
+      <AddExpense />
+    </section>
+    <section class="section--right">
+      <h2>Ausgabenübersicht</h2>
+      <ExpenseTable :expenses="subListObject" />
+    </section>
+    <section>
+      <Button isLink="true" isPrimary="true">
+        <router-link :to="'/settle-list/' + $route.params.expenseListId">Ausgaben begleichen</router-link>
+      </Button>
+      <Button @click.native="deleteList" isWarning="true">Ausgabenliste löschen</Button>
+    </section>
   </div>
 </template>
 
 <script>
 import Button from '../components/Button';
+import AddExpense from '../components/AddExpense';
+import ExpenseTable from '../components/ExpenseTable';
 import { db } from '../main';
 
 export default {
@@ -38,6 +45,32 @@ export default {
   },
   components: {
     Button,
+    ExpenseTable,
+    AddExpense,
+  },
+  computed: {
+    currentListPath: function () {
+      return `expense-lists/${this.$route.params.expenseListId}`;
+    },
+    totalListSum: function () {
+      let total = 0;
+      this.subListObject.forEach((expense) => {
+        if (expense.amount) {
+          total += Number(expense.amount);
+        }
+      });
+      return total;
+    },
+    participants: function () {
+      let participants = [];
+      this.subListObject.forEach((expense) => {
+        if (participants.includes(expense.name)) {
+          return;
+        }
+        participants.push(expense.name);
+      });
+      return participants.join(', ');
+    },
   },
   methods: {
     createExpense() {
@@ -53,12 +86,12 @@ export default {
         .getItem('myLists')
         .split(',')
         .forEach((item) => {
-          if (item !== `expense-lists/${this.$route.params.expenseListId}`) {
+          if (item !== this.currentListPath) {
             listsToKeep.push(item);
           }
         });
       localStorage.setItem('myLists', listsToKeep.join(','));
-      db.doc(`expense-lists/${this.$route.params.expenseListId}`)
+      db.doc(this.currentListPath)
         .delete()
         .then(() => {
           this.$router.push({ path: '/' });
@@ -71,10 +104,10 @@ export default {
   },
   firestore() {
     console.log(this.$route.params.expenseListId);
-    const listObject = db.doc(
-      `expense-lists/${this.$route.params.expenseListId}`
-    );
-    const subListObject = listObject.collection('expenses');
+    const listObject = db.doc(this.currentListPath);
+    const subListObject = listObject
+      .collection('expenses')
+      .orderBy('date', 'desc');
 
     this.loading = false;
     console.log(listObject);
@@ -82,6 +115,19 @@ export default {
       listObject,
       subListObject,
     };
+  },
+  mounted() {
+    console.log(localStorage.getItem('myLists'));
+    if (
+      !localStorage.getItem('myLists') ||
+      !localStorage.getItem('myLists').includes(this.currentListPath)
+    ) {
+      const oldListList = localStorage.getItem('myLists');
+      localStorage.setItem(
+        'myLists',
+        [oldListList, this.currentListPath].join(',')
+      );
+    }
   },
 };
 </script>

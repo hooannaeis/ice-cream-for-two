@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <div class="app__container">
-      <router-view />
+      <router-view style="width:100%" />
     </div>
     <Footer />
   </div>
@@ -50,5 +50,6 @@ html, body {
   display: flex;
   justify-content: center;
   text-align: center;
+  overflow: hidden;
 }
 </style>

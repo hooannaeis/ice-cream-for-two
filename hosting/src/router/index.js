@@ -1,7 +1,6 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Home from '../views/Home.vue'
-import ExpenseList from '../views/ExpenseList.vue'
 
 Vue.use(VueRouter)
 
@@ -11,7 +10,8 @@ Vue.use(VueRouter)
     name: 'Home',
     component: Home
   },
-  { path: '/expense-lists/:expenseListId', component: ExpenseList }
+  { path: '/expense-lists/:expenseListId', component: () => import('@/views/ExpenseList.vue') },
+  { path: '/settle-list/:expenseListId', component: () => import('@/views/SettleList.vue') }
 ]
 
 const router = new VueRouter({

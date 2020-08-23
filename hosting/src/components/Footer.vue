@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div @click="goHome">
     <svg
       width="4rem"
       height="116px"
@@ -28,3 +28,13 @@
     </svg>
   </div>
 </template>
+
+<script>
+export default {
+  methods: {
+    goHome() {
+      this.$router.push({ path: '/' });
+    }
+  }
+}
+</script>
