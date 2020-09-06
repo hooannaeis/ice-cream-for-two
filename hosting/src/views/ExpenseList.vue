@@ -13,7 +13,7 @@
       </Button>
     </section>
     <section>
-      <AddExpense />
+      <AddExpense :participants="participants" />
     </section>
     <section class="section--right">
       <h2>Ausgabenübersicht</h2>
@@ -63,13 +63,17 @@ export default {
     },
     participants: function () {
       let participants = [];
-      this.subListObject.forEach((expense) => {
-        if (participants.includes(expense.name)) {
-          return;
-        }
-        participants.push(expense.name);
-      });
-      return participants.join(', ');
+      try {
+        this.subListObject.forEach((expense) => {
+          if (participants.includes(expense.name)) {
+            return;
+          }
+          participants.push(expense.name);
+        });
+        return participants;
+      } catch(e) {
+        return ['Bisher keine Teilnehmer']
+      }
     },
   },
   methods: {

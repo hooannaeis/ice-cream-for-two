@@ -1,8 +1,8 @@
 <template>
   <div>
     <h1>{{ listObject.name }}</h1>
-    <section class="section--left" v-for="(settleParty, settlePartyIndex) in settledList" :key="settlePartyIndex">
-      <SettlePerson :settleName="settlePartyIndex" :settlePayments="settleParty"/>
+    <section v-for="(settleParty, settlePartyIndex) in settledList" :key="settlePartyIndex">
+      <SettlePerson :settleName="settlePartyIndex" :settlePayments="settleParty" :class="[isNetReceiver(settleParty) ? ['section--left', 'success'] : ['section--right', 'error']]"/>
     </section>
     <Button isLink="true">
       <router-link :to="'/expense-lists/' + $route.params.expenseListId">zurück zur Ausgabenliste</router-link>
@@ -138,6 +138,14 @@ export default {
 
       return settleObject;
     },
+  },
+  methods: {
+    isNetReceiver: function(settleParty) {
+      const receives = settleParty.receives ? settleParty.receives.length : 0;
+      const pays = settleParty.pays ? settleParty.pays.length : 0;
+      console.log(receives, pays)
+      return pays < receives
+    }
   },
   firestore() {
     const listObject = db.doc(this.currentListPath);

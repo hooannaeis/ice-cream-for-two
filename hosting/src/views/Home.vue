@@ -3,8 +3,13 @@
     <h1>Ice cream for two</h1>
     <section class="section--left">
       <h2>Neue Liste Erstellen</h2>
-      <div v-if="error" class="error">{{error}}</div>
-      <input type="text" id="newListName" v-model="newListName" placeholder="Neue Liste erstellen" />
+      <div v-if="error" class="error">{{ error }}</div>
+      <input
+        type="text"
+        id="newListName"
+        v-model="newListName"
+        placeholder="Neue Liste erstellen"
+      />
       <Button @click.native="createList">+</Button>
     </section>
     <section class="section--right">
@@ -30,7 +35,7 @@ export default {
   data() {
     return {
       error: null,
-      newListName: undefined,
+      newListName: undefined
     };
   },
   components: {
@@ -44,14 +49,13 @@ export default {
         return myLists.split(',');
       }
       return [];
-    },
+    }
   },
   methods: {
     getFormattedDate(seconds) {
       const milSecs = seconds * 1000;
-      return `${new Date(milSecs).getDate()}.${
-        new Date(milSecs).getMonth() + 1
-      }.${new Date(milSecs).getFullYear()}`;
+      return `${new Date(milSecs).getDate()}.${new Date(milSecs).getMonth() +
+        1}.${new Date(milSecs).getFullYear()}`;
     },
     createList() {
       if (!this.newListName) {
@@ -61,9 +65,9 @@ export default {
       db.collection('expense-lists')
         .add({
           name: this.newListName,
-          settled: false,
+          settled: false
         })
-        .then((doc) => {
+        .then(doc => {
           console.log(doc);
           this.newListName = null;
           const prevLists = localStorage.getItem('myLists');
@@ -75,11 +79,11 @@ export default {
           }
           this.$router.push({ path: doc.path });
         })
-        .catch((err) => {
+        .catch(err => {
           this.error = err;
           return;
         });
-    },
+    }
   },
   created() {
     const myLists = localStorage.getItem('myLists');
@@ -89,12 +93,11 @@ export default {
   },
   firestore() {
     return {
-      unsettleLists: db.collection('expense-lists'),
+      unsettleLists: db.collection('expense-lists')
     };
-  },
+  }
 };
 </script>
-
 
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Dokdo&family=Roboto&display=swap');
@@ -105,7 +108,8 @@ body {
   background: linear-gradient(145deg, #b0b0b0, #d2d2d2);
 }
 
-h1, h2 {
+h1,
+h2 {
   font-family: 'Dokdo', cursive;
   color: #2e2d2d;
   padding: 0.2rem;
@@ -122,10 +126,15 @@ h2 {
 }
 
 .error {
-  color: red;
+  color: #b94d62 !important;
 }
 
-input[type='text'], input[type='number'] {
+.success {
+  color: rgba(1, 168, 223, 1) !important;
+}
+
+input[type='text'],
+input[type='number'] {
   border: none;
   border-bottom: 1px solid black;
   padding: 0.8rem;

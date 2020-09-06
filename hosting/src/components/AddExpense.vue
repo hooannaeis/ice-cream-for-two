@@ -3,30 +3,59 @@
     <div v-if="isInAddMode">
       <h2>neue Ausgabe hinzufügen</h2>
       <div class="np-form-group">
-        <label v-if="error.name" for="addName" class="np-form-element error">{{ error.name }}</label>
+        <label v-if="error.name" for="addName" class="np-form-element error">{{
+          error.name
+        }}</label>
         <label v-else class="np-form-element" for="addName">Name</label>
-        <input class="np-form-element" type="text" id="addName" v-model="expenseToAdd.name" />
+
+        <input type="text" v-model="expenseToAdd.name" list="participants" />
+        <datalist id="participants">
+          <option v-for="participant in participants" :key="participant">{{
+            participant
+          }}</option>
+        </datalist>
       </div>
       <div class="np-form-group">
         <label
           v-if="error.subject"
           for="addSubject"
           class="np-form-element error"
-        >{{ error.subject }}</label>
-        <label v-else class="np-form-element" for="addSubject">Beschreibung</label>
-        <input class="np-form-element" type="text" id="addSubject" v-model="expenseToAdd.subject" />
+          >{{ error.subject }}</label
+        >
+        <label v-else class="np-form-element" for="addSubject"
+          >Beschreibung</label
+        >
+        <input
+          class="np-form-element"
+          type="text"
+          id="addSubject"
+          v-model="expenseToAdd.subject"
+        />
       </div>
       <div class="np-form-group">
-        <label v-if="error.amount" for="addAmount" class="np-form-element error">{{ error.amount }}</label>
+        <label
+          v-if="error.amount"
+          for="addAmount"
+          class="np-form-element error"
+          >{{ error.amount }}</label
+        >
         <label v-else class="np-form-element" for="addAmount">Betrag</label>
-        <input class="np-form-element" type="number" min="0" id="addAmount" v-model="expenseToAdd.amount" />
+        <input
+          class="np-form-element"
+          type="number"
+          min="0"
+          id="addAmount"
+          v-model="expenseToAdd.amount"
+        />
       </div>
-      <div class="error" v-if="error.general">{{error.general}}</div>
+      <div class="error" v-if="error.general">{{ error.general }}</div>
       <Button isWarning="true" @click.native="toggleAddMode">verwerfen</Button>
       <Button @click.native="addExpense" isPrimary="true">speichern</Button>
     </div>
     <div v-else>
-      <Button isFullWidth="true" @click.native="toggleAddMode">neue Ausgabe eintragen</Button>
+      <Button isFullWidth="true" @click.native="toggleAddMode"
+        >neue Ausgabe eintragen</Button
+      >
     </div>
   </div>
 </template>
@@ -38,22 +67,24 @@ import Button from '../components/Button';
 export default {
   data() {
     return {
+      createNewParticipantPrompt: 'Neuen Teilnehmer anlegen',
       isInAddMode: false,
       expenseToAdd: {
         name: null,
         subject: null,
-        amount: null,
+        amount: null
       },
       error: {
         name: null,
         subject: null,
         amount: null,
-        general: null,
-      },
+        general: null
+      }
     };
   },
+  props: { participants: { type: Array, default: [] } },
   components: {
-    Button,
+    Button
   },
   methods: {
     toggleAddMode() {
@@ -90,25 +121,26 @@ export default {
         return;
       }
 
-      const newExpense = {
+      let newExpense = {
         ...this.expenseToAdd,
-        date: new Date().getTime(),
+        date: new Date().getTime()
       };
+      newExpense.name = newExpense.name.trim();
       console.log(`expense to add: ${newExpense}`);
 
       db.doc(this.$route.path)
         .collection('expenses')
         .add(newExpense)
-        .then((doc) => {
+        .then(doc => {
           console.log(doc);
           this.toggleAddMode();
         })
-        .catch((err) => {
+        .catch(err => {
           this.error.general = err;
           return;
         });
-    },
-  },
+    }
+  }
 };
 </script>
 

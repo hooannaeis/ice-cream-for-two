@@ -12,9 +12,9 @@
         <td>{{Number(expense.amount).toFixed(2)}}</td>
       </tr>
       <tr class="np-table-row" style="border-top:1px dashed black;">
-        <td>Gesamt</td>
+        <td><strong>Gesamt</strong></td>
         <td></td>
-        <td>{{totalListSum}}</td>
+        <td><strong>{{totalListSum}}</strong></td>
       </tr>
     </table>
     <div v-else>Du hast noch keine Ausgaben eingetragen</div>
