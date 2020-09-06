@@ -16,14 +16,14 @@
       <AddExpense :participants="participants" />
     </section>
     <section class="section--right">
-      <h2>Ausgabenübersicht</h2>
+      <h2>Ausgaben</h2>
       <ExpenseTable :expenses="subListObject" />
     </section>
     <section>
       <Button isLink="true" isPrimary="true">
         <router-link :to="'/settle-list/' + $route.params.expenseListId">Ausgaben begleichen</router-link>
       </Button>
-      <Button @click.native="deleteList" isWarning="true">Ausgabenliste löschen</Button>
+      <Button @click.native="deleteList" isWarning="true">Liste löschen</Button>
     </section>
   </div>
 </template>

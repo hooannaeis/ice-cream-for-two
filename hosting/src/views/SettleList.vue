@@ -5,7 +5,7 @@
       <SettlePerson :settleName="settlePartyIndex" :settlePayments="settleParty" :class="[isNetReceiver(settleParty) ? ['section--left', 'success'] : ['section--right', 'error']]"/>
     </section>
     <Button isLink="true">
-      <router-link :to="'/expense-lists/' + $route.params.expenseListId">zurück zur Ausgabenliste</router-link>
+      <router-link :to="'/expense-lists/' + $route.params.expenseListId">zur Ausgabenliste</router-link>
     </Button>
   </div>
 </template>
@@ -45,7 +45,8 @@ export default {
       let listAverage = listTotal / peopleCount;
       console.log(`total: ${listTotal}; avg: ${listAverage}`);
 
-      // set the initial balance
+      // set the initial balance to indicate if a person
+      // is a payer or receiver
       Object.keys(settleObject).forEach((payingPerson) => {
         settleObject[payingPerson]['balance'] =
           settleObject[payingPerson].total - listAverage;
@@ -89,7 +90,7 @@ export default {
           }
           console.log(`${payingPerson} --> ${receivingPerson}`);
 
-          // check if we can settle it easily
+          // check if we can settle it in one transaction
           if (amountLeftToPay <= amountLeftToReceive) {
             console.log(`${amountLeftToPay} --> ${amountLeftToReceive}`);
 
