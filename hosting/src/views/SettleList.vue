@@ -1,11 +1,29 @@
 <template>
   <div>
     <h1>{{ listObject.name }}</h1>
-    <section v-for="(settleParty, settlePartyIndex) in settledList" :key="settlePartyIndex">
-      <SettlePerson :settleName="settlePartyIndex" :settlePayments="settleParty" :class="[isNetReceiver(settleParty) ? ['section--left', 'success'] : ['section--right', 'error']]"/>
+    <section
+      v-for="(settleParty, settlePartyIndex) in settledList"
+      :key="settlePartyIndex"
+    >
+      <SettlePerson
+        :settleName="settlePartyIndex"
+        :settlePayments="settleParty"
+        :class="[
+          isNetReceiver(settleParty)
+            ? ['section--left', 'success']
+            : ['section--right', 'error']
+        ]"
+      />
     </section>
+    <CopyToClipboard
+      v-if="settledListForMessenger"
+      buttonText="für messenger kopieren"
+      :textToBeCopied="settledListForMessenger"
+    />
     <Button isLink="true">
-      <router-link :to="'/expense-lists/' + $route.params.expenseListId">zur Ausgabenliste</router-link>
+      <router-link :to="'/expense-lists/' + $route.params.expenseListId"
+        >zur Ausgabenliste</router-link
+      >
     </Button>
   </div>
 </template>
@@ -13,23 +31,25 @@
 <script>
 import { db } from '../main';
 import Button from '../components/Button';
+import CopyToClipboard from '../components/CopyToClipboard';
 import SettlePerson from '../components/SettlePerson';
 
 export default {
   components: {
     Button,
-    SettlePerson
+    SettlePerson,
+    CopyToClipboard
   },
   computed: {
-    currentListPath: function () {
+    currentListPath: function() {
       return `expense-lists/${this.$route.params.expenseListId}`;
     },
-    settledList: function () {
+    settledList: function() {
       let settleObject = {};
       let listTotal = 0;
       let peopleCount = 0;
 
-      this.subListObject.forEach((item) => {
+      this.subListObject.forEach(item => {
         const amountNumber = Number(item.amount);
         listTotal += amountNumber;
 
@@ -37,7 +57,7 @@ export default {
           settleObject[item.name].total += amountNumber;
         } else {
           settleObject[item.name] = {
-            total: amountNumber,
+            total: amountNumber
           };
           peopleCount += 1;
         }
@@ -47,7 +67,7 @@ export default {
 
       // set the initial balance to indicate if a person
       // is a payer or receiver
-      Object.keys(settleObject).forEach((payingPerson) => {
+      Object.keys(settleObject).forEach(payingPerson => {
         settleObject[payingPerson]['balance'] =
           settleObject[payingPerson].total - listAverage;
       });
@@ -101,7 +121,7 @@ export default {
 
             settleObject[receivingPerson].receives.push({
               amount: amountLeftToPay.toFixed(2),
-              name: payingPerson,
+              name: payingPerson
             });
 
             // take care of the payer
@@ -111,7 +131,7 @@ export default {
 
             settleObject[payingPerson].pays.push({
               amount: amountLeftToPay.toFixed(2),
-              name: receivingPerson,
+              name: receivingPerson
             });
           } else {
             // take care of the receiver
@@ -121,7 +141,7 @@ export default {
 
             settleObject[receivingPerson].receives.push({
               amount: amountLeftToReceive.toFixed(2),
-              name: payingPerson,
+              name: payingPerson
             });
 
             // take care of the payer
@@ -131,7 +151,7 @@ export default {
 
             settleObject[payingPerson].pays.push({
               amount: amountLeftToReceive.toFixed(2),
-              name: receivingPerson,
+              name: receivingPerson
             });
           }
         }
@@ -139,13 +159,35 @@ export default {
 
       return settleObject;
     },
+    settledListForMessenger: function() {
+      try {
+        let copyMessage = '══════════════\n';
+        Object.keys(this.settledList).forEach(personName => {
+          const person = this.settledList[personName];
+          if (person.pays) {
+            person.pays.forEach(payment => {
+              const { amount, name } = payment;
+              if (amount === '0.00') {
+                return;
+              }
+              copyMessage += `${personName} --> ${amount} EUR --> ${name}\n`;
+            });
+            copyMessage += `══════════════\n`;
+          }
+        });
+        return copyMessage;
+      } catch (e) {
+        console.error(e);
+        return null;
+      }
+    }
   },
   methods: {
     isNetReceiver: function(settleParty) {
       const receives = settleParty.receives ? settleParty.receives.length : 0;
       const pays = settleParty.pays ? settleParty.pays.length : 0;
-      console.log(receives, pays)
-      return pays < receives
+      console.log(receives, pays);
+      return pays < receives;
     }
   },
   firestore() {
@@ -156,11 +198,10 @@ export default {
     console.log(listObject);
     return {
       listObject,
-      subListObject,
+      subListObject
     };
-  },
+  }
 };
 </script>
 
-<style>
-</style>
+<style></style>
