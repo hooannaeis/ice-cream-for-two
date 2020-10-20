@@ -1,42 +1,74 @@
 <template>
   <div>
-    <table class="np-table" v-if="expenses.length > 0">
-      <tr class="np-table-heading">
-        <th>Name</th>
-        <th>Beschreibung</th>
-        <th>Betrag</th>
-      </tr>
-      <tr class="np-table-row" v-for="(expense, expenseIndex) in expenses" :key="expenseIndex">
-        <td>{{expense.name}}</td>
-        <td>{{expense.subject}}</td>
-        <td>{{Number(expense.amount).toFixed(2)}}</td>
-      </tr>
-      <tr class="np-table-row" style="border-top:1px dashed black;">
-        <td><strong>Gesamt</strong></td>
-        <td></td>
-        <td><strong>{{totalListSum}}</strong></td>
-      </tr>
-    </table>
+    <div v-if="expenses.length > 0">
+      <div class="np-table">
+        <div class="np-table-heading">Name</div>
+        <div class="np-table-heading">Beschreibung</div>
+        <div class="np-table-heading">Betrag</div>
+      </div>
+
+      <div v-for="(expense, expenseIndex) in expenses" :key="expenseIndex">
+        <AreYouSureExecute
+          class="np-table"
+          @acceptDecision="deleteItem(expense)"
+          acceptText="Ausgabe löschen"
+          declineText="abbrechen"
+        >
+          <span>{{ expense.name }}</span>
+          <span>{{ expense.subject }}</span>
+          <span>{{ Number(expense.amount).toFixed(2) }}</span>
+        </AreYouSureExecute>
+      </div>
+
+      <div class="np-table">
+        <div class="np-table-heading">Gesamt</div>
+        <div class="np-table-heading"></div>
+        <div class="np-table-heading">{{ totalListSum }}</div>
+      </div>
+    </div>
+
     <div v-else>Du hast noch keine Ausgaben eingetragen</div>
   </div>
 </template>
 
 <script>
+import AreYouSureExecute from './AreYouSureExecute';
+import { db } from '../main';
+
 export default {
+  components: {
+    AreYouSureExecute
+  },
   props: {
-    expenses: { type: Array, default: [] },
+    expenses: { type: Array, default: [] }
   },
   computed: {
-    totalListSum: function () {
+    totalListSum: function() {
       let total = 0;
-      this.expenses.forEach((expense) => {
+      this.expenses.forEach(expense => {
         if (expense.amount) {
           total += Number(expense.amount);
         }
       });
       return total.toFixed(2);
-    },
+    }
   },
+  methods: {
+    deleteItem(item) {
+      const itemKey = item['.key'];
+      const itemRef = db.doc(this.$route.path).collection('expenses').doc(itemKey);
+      console.log(itemRef);
+      itemRef
+        .delete()
+        .then(() => {
+          console.log('deleted', item);
+        })
+        .catch(err => {
+          console.error('error deleting', item);
+          return;
+        });
+    }
+  }
 };
 </script>
 
@@ -45,19 +77,11 @@ export default {
   border-radius: 5px;
   padding: 0.4rem 1rem;
   width: 100%;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
 }
 .np-table-heading {
   padding-top: 0.8rem;
   font-weight: bold;
-  border-bottom: 1px solid rgba(40, 40, 40, 0.801);
-}
-.np-table-row {
-  border-radius: 5px;
-  padding: 0.4rem 1rem;
-  border-top: 1px solid rgba(40, 40, 40, 0.801);
-  height: 100%;
-  padding-top: 0.4rem;
-  padding-bottom: 0.4rem;
-  padding-left: 1rem;
 }
 </style>
