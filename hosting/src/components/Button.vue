@@ -1,5 +1,5 @@
 <template>
-  <button :class="{ 'btn--isPrimary': isPrimary, 'btn--warn': isWarning, 'btn--fullWidth': isFullWidth, 'btn--isLink': isLink }">
+  <button :class="{ 'btn--isPrimary': isPrimary, 'btn--warn': isWarning, 'btn--fullWidth': isFullWidth, 'btn--isBright': isBright }">
     <slot></slot>
   </button>
 </template>
@@ -9,7 +9,7 @@ export default {
   props: {
     isWarning: String,
     isFullWidth: String,
-    isLink: String,
+    isBright: String,
     isPrimary: String
   },
 };
@@ -28,6 +28,7 @@ button {
   min-width: 1.8rem;
   cursor: pointer;
   font-weight: bold;
+  font-family: inherit;
 }
 button:hover {
   box-shadow: 2px 2px 4px 0px rgba(15, 15, 16, 0.842),
@@ -50,12 +51,12 @@ button:hover {
   width: 90%;
 }
 
-.btn--isLink {
+.btn--isBright {
   color: #1f2224;
   background: linear-gradient(225deg, #d0ab71, #f7cb87);
 }
 
-.btn--isLink:hover {
+.btn--isBright:hover {
   box-shadow: 2px 2px 4px 0px #c4a26b, -2px -2px 4px 0px #d0ab71,
     inset 0px 0px 0px 0px #c4a26b, inset 0px 0px 0px 0px #ffdb91;
 }

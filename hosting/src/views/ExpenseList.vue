@@ -8,7 +8,7 @@
       <h2>Zusammenfassung</h2>
       <p>Gesamtausgaben: {{ totalListSum }} EUR</p>
       <p>Teilnehmer: {{ participants }}</p>
-      <Button isLink="true">
+      <Button isBright="true">
         <router-link :to="'/settle-list/' + $route.params.expenseListId"
           >Ausgaben begleichen</router-link
         >
@@ -38,7 +38,7 @@
       <ExpenseTable :expenses="subListObject" />
     </section>
     <section>
-      <Button isLink="true">
+      <Button isBright="true">
         <router-link :to="'/settle-list/' + $route.params.expenseListId"
           >Ausgaben begleichen</router-link
         >

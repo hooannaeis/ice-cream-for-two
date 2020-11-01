@@ -75,7 +75,7 @@ export default {
 <style>
 .np-table {
   border-radius: 5px;
-  padding: 0.4rem 1rem;
+  padding: 0.4rem 0;
   width: 100%;
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;

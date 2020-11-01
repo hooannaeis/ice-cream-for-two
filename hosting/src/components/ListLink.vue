@@ -1,5 +1,5 @@
 <template>
-  <Button isLink="true">
+  <Button isBright="true">
     <router-link class="link" :to="listPath">{{ listObject.name }}</router-link>
   </Button>
 </template>
