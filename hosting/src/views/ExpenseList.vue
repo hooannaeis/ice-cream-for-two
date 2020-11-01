@@ -1,16 +1,34 @@
 <template>
   <div>
-    <h1>{{listObject.name}}</h1>
+    <h1>{{ listObject.name }}</h1>
     <section v-if="listObject.settled">
       <div>diese Liste ist bereits beglichen</div>
     </section>
-    <section class="section--left">
+    <section class="section--left" v-if="participants.length > 0">
       <h2>Zusammenfassung</h2>
-      <p>Gesamtausgaben: {{totalListSum}} EUR</p>
-      <p>Teilnehmer: {{participants}}</p>
-      <Button isLink="true" isPrimary="true">
-        <router-link :to="'/settle-list/' + $route.params.expenseListId">Ausgaben begleichen</router-link>
+      <p>Gesamtausgaben: {{ totalListSum }} EUR</p>
+      <p>Teilnehmer: {{ participants }}</p>
+      <Button isLink="true">
+        <router-link :to="'/settle-list/' + $route.params.expenseListId"
+          >Ausgaben begleichen</router-link
+        >
       </Button>
+    </section>
+    <section class="section--left" v-else>
+      <h2>Zusammenfassung</h2>
+      <p>
+        In dieser Liste sind noch keine Ausgaben eingetragen. Willst du sie
+        mit anderen Personen teilen, um gemeinsam daran zu arbeiten?
+      </p>
+      <p>
+        Dazu musst du nur den Link zu dieser Seite kopieren. Sobald deine
+        Freunde den Link geklickt haben, sind sie Teil diser Liste.
+      </p>
+      <CopyToClipboard
+        v-if="linkToThisList"
+        buttonText="Link kopieren"
+        :textToBeCopied="linkToThisList"
+      />
     </section>
     <section>
       <AddExpense :participants="participants" />
@@ -20,10 +38,12 @@
       <ExpenseTable :expenses="subListObject" />
     </section>
     <section>
-      <Button isLink="true" isPrimary="true">
-        <router-link :to="'/settle-list/' + $route.params.expenseListId">Ausgaben begleichen</router-link>
+      <Button isLink="true">
+        <router-link :to="'/settle-list/' + $route.params.expenseListId"
+          >Ausgaben begleichen</router-link
+        >
       </Button>
-      <Button @click.native="deleteList" isWarning="true">Liste löschen</Button>
+      <Button @click.native="deleteList" isWarning="true">Liste entfernen</Button>
     </section>
   </div>
 </template>
@@ -32,6 +52,7 @@
 import Button from '../components/Button';
 import AddExpense from '../components/AddExpense';
 import ExpenseTable from '../components/ExpenseTable';
+import CopyToClipboard from '../components/CopyToClipboard';
 import { db } from '../main';
 
 export default {
@@ -40,41 +61,45 @@ export default {
       error: null,
       newExpenseName: '',
       listObject: null,
-      subListObject: [null],
+      subListObject: [null]
     };
   },
   components: {
     Button,
+    CopyToClipboard,
     ExpenseTable,
-    AddExpense,
+    AddExpense
   },
   computed: {
-    currentListPath: function () {
+    linkToThisList: function() {
+      return document.location.href;
+    },
+    currentListPath: function() {
       return `expense-lists/${this.$route.params.expenseListId}`;
     },
-    totalListSum: function () {
+    totalListSum: function() {
       let total = 0;
-      this.subListObject.forEach((expense) => {
+      this.subListObject.forEach(expense => {
         if (expense.amount) {
           total += Number(expense.amount);
         }
       });
       return total;
     },
-    participants: function () {
+    participants: function() {
       let participants = [];
       try {
-        this.subListObject.forEach((expense) => {
+        this.subListObject.forEach(expense => {
           if (participants.includes(expense.name)) {
             return;
           }
           participants.push(expense.name);
         });
         return participants;
-      } catch(e) {
-        return ['Bisher keine Teilnehmer']
+      } catch (e) {
+        return ['Bisher keine Teilnehmer'];
       }
-    },
+    }
   },
   methods: {
     createExpense() {
@@ -89,7 +114,7 @@ export default {
       localStorage
         .getItem('myLists')
         .split(',')
-        .forEach((item) => {
+        .forEach(item => {
           if (item !== this.currentListPath) {
             listsToKeep.push(item);
           }
@@ -100,11 +125,11 @@ export default {
         .then(() => {
           this.$router.push({ path: '/' });
         })
-        .catch((err) => {
+        .catch(err => {
           console.error(err);
           return;
         });
-    },
+    }
   },
   firestore() {
     console.log(this.$route.params.expenseListId);
@@ -117,7 +142,7 @@ export default {
     console.log(listObject);
     return {
       listObject,
-      subListObject,
+      subListObject
     };
   },
   mounted() {
@@ -132,9 +157,8 @@ export default {
         [oldListList, this.currentListPath].join(',')
       );
     }
-  },
+  }
 };
 </script>
 
-<style>
-</style>
+<style></style>

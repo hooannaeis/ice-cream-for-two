@@ -1,7 +1,7 @@
 <template>
   <div>
     <div v-if="isInAddMode">
-      <h2>neue Ausgabe hinzufügen</h2>
+      <h2>neue Ausgabe</h2>
       <div class="np-form-group">
         <label v-if="error.name" for="addName" class="np-form-element error">{{
           error.name
@@ -53,7 +53,7 @@
       <Button @click.native="addExpense" isPrimary="true">speichern</Button>
     </div>
     <div v-else>
-      <Button isFullWidth="true" @click.native="toggleAddMode"
+      <Button isFullWidth="true" @click.native="toggleAddMode" isPrimary="true"
         >neue Ausgabe eintragen</Button
       >
     </div>
@@ -114,7 +114,7 @@ export default {
         isValidInput = false;
       }
       if (!this.expenseToAdd.amount || this.expenseToAdd.amount === 0) {
-        this.error.amount = 'Bitte trage die Höhe deiner Ausgabe ein';
+        this.error.amount = 'Wie viel hast du ausgegeben?';
         isValidInput = false;
       }
       if (!isValidInput) {

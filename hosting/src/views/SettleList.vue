@@ -17,7 +17,7 @@
     </section>
     <CopyToClipboard
       v-if="settledListForMessenger"
-      buttonText="für messenger kopieren"
+      buttonText="Zusammenfassung kopieren"
       :textToBeCopied="settledListForMessenger"
     />
     <Button isLink="true">
