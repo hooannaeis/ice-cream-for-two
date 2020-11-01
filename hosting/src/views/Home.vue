@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h1>Ice cream for two</h1>
+    <h1>Ice cream<br/>for two</h1>
     <section class="section--left">
       <h2>Neue Liste Erstellen</h2>
       <div v-if="error" class="error">{{ error }}</div>

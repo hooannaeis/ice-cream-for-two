@@ -118,7 +118,7 @@ section {
 }
 
 .app__container {
-  width: min(90vw, 500px);
+  width: min(96vw, 500px);
   min-height: 50vh;
   background: #e7be7e;
   background: radial-gradient(circle, #c4a26b 0%, #ffdb91 100%);
