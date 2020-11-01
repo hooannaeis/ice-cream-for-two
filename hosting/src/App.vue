@@ -108,7 +108,7 @@ section {
   min-height: 95vh;
   max-width: 100vw;
   overflow-x: hidden;
-  padding: 1rem;
+  padding-top: 1rem;
   background: rgb(43, 90, 144);
   background: radial-gradient(
     circle,
@@ -118,7 +118,7 @@ section {
 }
 
 .app__container {
-  width: min(96vw, 500px);
+  width: min(100vw, 500px);
   min-height: 50vh;
   background: #e7be7e;
   background: radial-gradient(circle, #c4a26b 0%, #ffdb91 100%);
