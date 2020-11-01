@@ -16,7 +16,7 @@
       <h2>Meine Listen</h2>
       <div v-if="myLists.length > 0">
         <div v-for="(listName, listIndex) in myLists" :key="listIndex">
-          <ListLink :listPath="listName" />
+          <ListLink :listPath="listName" v-if="listName.length > 0" />
         </div>
       </div>
       <div v-else>Du hast noch keine Listen erstellt.</div>
