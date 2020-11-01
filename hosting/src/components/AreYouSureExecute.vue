@@ -51,7 +51,7 @@ export default {
 </script>
 
 <style>
-.interaction__btn--yes {
+.interaction__btn--no {
   min-width: 50%;
   background: radial-gradient(
     circle,
@@ -59,7 +59,7 @@ export default {
     rgba(1, 168, 223, 1) 100%
   );
 }
-.interaction__btn--no {
+.interaction__btn--yes {
   min-width: 50%;
   background: linear-gradient(225deg, #b94d62, #dc5b75);
 }

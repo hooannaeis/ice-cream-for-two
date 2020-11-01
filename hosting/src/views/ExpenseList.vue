@@ -46,9 +46,13 @@
           Ausgaben begleichen
         </Button>
       </router-link>
-      <Button @click.native="deleteList" isWarning="true"
-        >Liste entfernen</Button
+      <AreYouSureExecute
+        @acceptDecision="deleteList"
+        acceptText="wirklich entfernen"
+        declineText="abbrechen"
       >
+        <Button isWarning="true">Liste entfernen</Button>
+      </AreYouSureExecute>
     </section>
   </div>
 </template>
@@ -57,6 +61,7 @@
 import Button from '../components/Button';
 import AddExpense from '../components/AddExpense';
 import ExpenseTable from '../components/ExpenseTable';
+import AreYouSureExecute from '../components/AreYouSureExecute';
 import CopyToClipboard from '../components/CopyToClipboard';
 import { db } from '../main';
 
@@ -73,6 +78,7 @@ export default {
     Button,
     CopyToClipboard,
     ExpenseTable,
+    AreYouSureExecute,
     AddExpense
   },
   computed: {
