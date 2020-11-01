@@ -11,7 +11,7 @@
         <AreYouSureExecute
           class="np-table"
           @acceptDecision="deleteItem(expense)"
-          acceptText="Ausgabe entfernen"
+          acceptText="entfernen"
           declineText="abbrechen"
         >
           <span>{{ expense.name }}</span>
