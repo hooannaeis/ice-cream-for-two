@@ -20,11 +20,10 @@
       buttonText="Zusammenfassung kopieren"
       :textToBeCopied="settledListForMessenger"
     />
-    <Button isBright="true">
-      <router-link :to="'/expense-lists/' + $route.params.expenseListId"
-        >zur Ausgabenliste</router-link
-      >
-    </Button>
+
+    <router-link :to="'/expense-lists/' + $route.params.expenseListId">
+      <Button isBright="true">zur Ausgabenliste</Button>
+    </router-link>
   </div>
 </template>
 

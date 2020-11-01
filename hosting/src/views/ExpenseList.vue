@@ -4,21 +4,21 @@
     <section v-if="listObject.settled">
       <div>diese Liste ist bereits beglichen</div>
     </section>
-    <section class="section--left" v-if="participants.length > 0">
+    <section class="section--left" v-if="participants.length > 1">
       <h2>Zusammenfassung</h2>
       <p>Gesamtausgaben: {{ totalListSum }} EUR</p>
       <p>Teilnehmer: {{ participants }}</p>
-      <Button isBright="true">
-        <router-link :to="'/settle-list/' + $route.params.expenseListId"
-          >Ausgaben begleichen</router-link
-        >
-      </Button>
+      <router-link :to="'/settle-list/' + $route.params.expenseListId">
+        <Button isBright="true">
+          Ausgaben begleichen
+        </Button>
+      </router-link>
     </section>
     <section class="section--left" v-else>
       <h2>Zusammenfassung</h2>
       <p>
-        In dieser Liste sind noch keine Ausgaben eingetragen. Willst du sie
-        mit anderen Personen teilen, um gemeinsam daran zu arbeiten?
+        Du allein scheinst von dieser Liste zu wissen. Willst du sie mit anderen
+        Personen teilen, um gemeinsam Ausgaben einzutragen?
       </p>
       <p>
         Dazu musst du nur den Link zu dieser Seite kopieren. Sobald deine
@@ -30,20 +30,25 @@
         :textToBeCopied="linkToThisList"
       />
     </section>
-    <section>
+    <section class="section--right">
       <AddExpense :participants="participants" />
     </section>
-    <section class="section--right">
+    <section class="section--left">
       <h2>Ausgaben</h2>
       <ExpenseTable :expenses="subListObject" />
     </section>
     <section>
-      <Button isBright="true">
-        <router-link :to="'/settle-list/' + $route.params.expenseListId"
-          >Ausgaben begleichen</router-link
-        >
-      </Button>
-      <Button @click.native="deleteList" isWarning="true">Liste entfernen</Button>
+      <router-link
+        :to="'/settle-list/' + $route.params.expenseListId"
+        v-if="participants.length > 1"
+      >
+        <Button isBright="true">
+          Ausgaben begleichen
+        </Button>
+      </router-link>
+      <Button @click.native="deleteList" isWarning="true"
+        >Liste entfernen</Button
+      >
     </section>
   </div>
 </template>
