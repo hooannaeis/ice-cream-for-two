@@ -168,7 +168,7 @@ export default {
         [oldListList, this.currentListPath].join(',')
       );
     }
-  }
+  },
 };
 </script>
 

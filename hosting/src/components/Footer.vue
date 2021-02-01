@@ -31,9 +31,17 @@
 
 <script>
 export default {
+  computed: {
+    homeLink() {
+      if (this.$route.path === "/about") {
+        return "/"
+      }
+      return "/about"
+    }
+  },
   methods: {
     goHome() {
-      this.$router.push({ path: '/' });
+      this.$router.push({ path: this.homeLink });
     }
   }
 }

@@ -6,6 +6,7 @@ import firebaseConfig from './firebaseConfig';
 import './registerServiceWorker';
 import { firebase } from '@firebase/app';
 import '@firebase/firestore';
+import Meta from 'vue-meta';
 
 Vue.config.productionTip = false;
 
@@ -13,7 +14,7 @@ Vue.config.productionTip = false;
 const firebaseApp = firebase.initializeApp(firebaseConfig);
 
 Vue.use(VueFirestore);
-
+Vue.use(Meta);
 export const db = firebaseApp.firestore();
 
 new Vue({

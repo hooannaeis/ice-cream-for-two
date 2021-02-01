@@ -14,21 +14,40 @@ export default {
   name: 'app',
   components: {
     Footer
+  },
+  metaInfo: {
+    // Children can override the title.
+    title: 'Ice Cream for Two // a simple expense splitting app',
+    // Result: My Page Title ← My Site
+    // If a child changes the title to "My Other Page Title",
+    // it will become: My Other Page Title // Ice Cream for Two
+    titleTemplate: '%s // Ice Cream for Two',
+    // Define meta tags here.
+    meta: [
+      { 'http-equiv': 'Content-Type', content: 'text/html; charset=utf-8' },
+      { name: 'viewport', content: 'width=device-width, initial-scale=1' },
+      {
+        name: 'description',
+        content:
+          'This is a very simple app to help you split expenses between you and your friends. No login required. Free forever'
+      }
+    ],
+    link: [{ rel: 'canonical', href: 'https://ice-cream-for-two.web.app' }]
   }
 };
 </script>
 
 <style>
 @font-face {
-  font-family: "ShinySignature";
-  src: local("ShinySignature"),
-   url(./assets/fonts/ShinySignature.ttf) format("truetype");
+  font-family: 'ShinySignature';
+  src: local('ShinySignature'),
+    url(./assets/fonts/ShinySignature.ttf) format('truetype');
 }
 
 @font-face {
-  font-family: "CaviarDreams";
-  src: local("CaviarDreams"),
-   url(./assets/fonts/CaviarDreams.ttf) format("truetype");
+  font-family: 'CaviarDreams';
+  src: local('CaviarDreams'),
+    url(./assets/fonts/CaviarDreams.ttf) format('truetype');
 }
 
 html,
