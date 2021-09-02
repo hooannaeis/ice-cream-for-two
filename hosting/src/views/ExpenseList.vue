@@ -95,7 +95,7 @@ export default {
           total += Number(expense.amount);
         }
       });
-      return total;
+      return total.toFixed(2);
     },
     participants: function() {
       let participants = [];
